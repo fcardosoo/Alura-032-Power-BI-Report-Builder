@@ -372,6 +372,14 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>dsVendedores</DataSetName>
+            <SortExpressions>
+              <SortExpression>
+                <Value>=Fields!Região.Value</Value>
+              </SortExpression>
+              <SortExpression>
+                <Value>=Fields!Nome.Value</Value>
+              </SortExpression>
+            </SortExpressions>
             <Top>17.45972mm</Top>
             <Left>22.987mm</Left>
             <Height>39.69028mm</Height>

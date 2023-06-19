@@ -680,9 +680,10 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!Faturamento.Value/Sum(Fields!Faturamento.Value, "Região")</Value>
                                   <Style>
                                     <FontSize>11pt</FontSize>
+                                    <Format>0.00%</Format>
                                     <Color>DimGray</Color>
                                   </Style>
                                 </TextRun>

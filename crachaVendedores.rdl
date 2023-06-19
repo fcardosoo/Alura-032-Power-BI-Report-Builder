@@ -11,7 +11,7 @@
       <am:Name>PBIRB</am:Name>
       <am:Version>15.7.1803.54</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2023-06-19T14:20:33.4353980Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2023-06-19T19:35:16.6728692Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -31,6 +31,11 @@
     <DataSet Name="dsVendedores">
       <Query>
         <DataSourceName>MeuWorkspace_DashboardVendas</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="TbVendedoresRegiE3o">
+            <Value>=Parameters!TbVendedoresRegiE3o.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
         <rd:DesignerState>
           <QueryDefinition xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/AnalysisServices/QueryDefinition">
             <CommandType>DAX</CommandType>
@@ -97,7 +102,15 @@
               <AutoExecute>false</AutoExecute>
               <From>Model</From>
               <Filter>
-                <FilterItems />
+                <FilterItems>
+                  <FilterItem>
+                    <HierarchyUniqueName>[Tb_Vendedores].[Região]</HierarchyUniqueName>
+                    <Condition xsi:type="EqualTo">
+                      <Members />
+                      <Parametrized>true</Parametrized>
+                    </Condition>
+                  </FilterItem>
+                </FilterItems>
               </Filter>
               <Calculations />
               <Aggregates />
@@ -106,12 +119,27 @@
               </QueryProperties>
             </QuerySpecification>
             <Query>
-              <Statement>EVALUATE SUMMARIZECOLUMNS('Tb_Vendedores'[Nome], 'Tb_Vendedores'[Matricula], 'Tb_Vendedores'[E-mail], 'Tb_Vendedores'[Imagem], 'Tb_Vendedores'[Região])</Statement>
-              <ParameterDefinitions />
+              <Statement>EVALUATE SUMMARIZECOLUMNS('Tb_Vendedores'[Nome], 'Tb_Vendedores'[Matricula], 'Tb_Vendedores'[E-mail], 'Tb_Vendedores'[Imagem], 'Tb_Vendedores'[Região], RSCustomDaxFilter(@TbVendedoresRegiE3o,EqualToCondition,[Tb_Vendedores].[Região],String))</Statement>
+              <ParameterDefinitions>
+                <ParameterDefinition>
+                  <Name>TbVendedoresRegiE3o</Name>
+                  <DefaultValues />
+                  <Caption>Região</Caption>
+                  <HierarchyUniqueName>[Tb_Vendedores].[Região]</HierarchyUniqueName>
+                  <ParameterValuesQuery>
+                    <Statement>EVALUATE SELECTCOLUMNS (ADDCOLUMNS (SUMMARIZECOLUMNS (ROLLUPADDISSUBTOTAL ('Tb_Vendedores'[Região], "h0")), "ParameterLevel", if ([h0], 0, 1)), "ParameterCaption", SWITCH([ParameterLevel], 1, 'Tb_Vendedores'[Região], "Blank()"), "ParameterValue", 'Tb_Vendedores'[Região], "ParameterLevel", [ParameterLevel], "'Tb_Vendedores'[Região]", 'Tb_Vendedores'[Região]) order by 'Tb_Vendedores'[Região], [ParameterLevel]</Statement>
+                    <ParameterizedStatement>
+                      <ReferencedParameters />
+                    </ParameterizedStatement>
+                  </ParameterValuesQuery>
+                  <MultipleValues>true</MultipleValues>
+                  <AllowBlank>true</AllowBlank>
+                </ParameterDefinition>
+              </ParameterDefinitions>
             </Query>
           </QueryDefinition>
         </rd:DesignerState>
-        <CommandText>EVALUATE SUMMARIZECOLUMNS('Tb_Vendedores'[Nome], 'Tb_Vendedores'[Matricula], 'Tb_Vendedores'[E-mail], 'Tb_Vendedores'[Imagem], 'Tb_Vendedores'[Região])</CommandText>
+        <CommandText>EVALUATE SUMMARIZECOLUMNS('Tb_Vendedores'[Nome], 'Tb_Vendedores'[Matricula], 'Tb_Vendedores'[E-mail], 'Tb_Vendedores'[Imagem], 'Tb_Vendedores'[Região], RSCustomDaxFilter(@TbVendedoresRegiE3o,EqualToCondition,[Tb_Vendedores].[Região],String))</CommandText>
       </Query>
       <Fields>
         <Field Name="Nome">
@@ -133,6 +161,80 @@
         <Field Name="Região">
           <rd:TypeName>System.String</rd:TypeName>
           <DataField>Tb_Vendedores[Região]</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="TbVendedoresRegiE3o">
+      <Query>
+        <DataSourceName>MeuWorkspace_DashboardVendas</DataSourceName>
+        <rd:DesignerState>
+          <QueryDefinition xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/AnalysisServices/QueryDefinition">
+            <CommandType>DAX</CommandType>
+            <Type>Query</Type>
+            <QuerySpecification xsi:type="MDXQuerySpecification">
+              <Select>
+                <Items>
+                  <Item>
+                    <ID xsi:type="Measure">
+                      <MeasureName>ParameterCaption</MeasureName>
+                      <UniqueName>[Measures].[ParameterCaption]</UniqueName>
+                    </ID>
+                    <ItemCaption>ParameterCaption</ItemCaption>
+                    <FormattedValue>true</FormattedValue>
+                  </Item>
+                  <Item>
+                    <ID xsi:type="Measure">
+                      <MeasureName>ParameterValue</MeasureName>
+                      <UniqueName>[Measures].[ParameterValue]</UniqueName>
+                    </ID>
+                    <ItemCaption>ParameterValue</ItemCaption>
+                    <FormattedValue>true</FormattedValue>
+                  </Item>
+                  <Item>
+                    <ID xsi:type="Measure">
+                      <MeasureName>ParameterLevel</MeasureName>
+                      <UniqueName>[Measures].[ParameterLevel]</UniqueName>
+                    </ID>
+                    <ItemCaption>ParameterLevel</ItemCaption>
+                    <FormattedValue>true</FormattedValue>
+                  </Item>
+                </Items>
+              </Select>
+              <AutoExecute>false</AutoExecute>
+              <From>Model</From>
+              <Filter>
+                <FilterItems />
+              </Filter>
+              <Calculations />
+              <Aggregates />
+              <QueryProperties />
+            </QuerySpecification>
+            <Query>
+              <Statement>EVALUATE SELECTCOLUMNS (ADDCOLUMNS (SUMMARIZECOLUMNS (ROLLUPADDISSUBTOTAL ('Tb_Vendedores'[Região], "h0")), "ParameterLevel", if ([h0], 0, 1)), "ParameterCaption", SWITCH([ParameterLevel], 1, 'Tb_Vendedores'[Região], "Blank()"), "ParameterValue", 'Tb_Vendedores'[Região], "ParameterLevel", [ParameterLevel], "'Tb_Vendedores'[Região]", 'Tb_Vendedores'[Região]) order by 'Tb_Vendedores'[Região], [ParameterLevel]</Statement>
+              <ParameterDefinitions />
+            </Query>
+          </QueryDefinition>
+        </rd:DesignerState>
+        <rd:AutoGenerated>true</rd:AutoGenerated>
+        <rd:Hidden>true</rd:Hidden>
+        <CommandText>EVALUATE SELECTCOLUMNS (ADDCOLUMNS (SUMMARIZECOLUMNS (ROLLUPADDISSUBTOTAL ('Tb_Vendedores'[Região], "h0")), "ParameterLevel", if ([h0], 0, 1)), "ParameterCaption", SWITCH([ParameterLevel], 1, 'Tb_Vendedores'[Região], "Blank()"), "ParameterValue", 'Tb_Vendedores'[Região], "ParameterLevel", [ParameterLevel], "'Tb_Vendedores'[Região]", 'Tb_Vendedores'[Região]) order by 'Tb_Vendedores'[Região], [ParameterLevel]</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="ParameterCaption">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>[ParameterCaption]</DataField>
+        </Field>
+        <Field Name="ParameterValue">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>[ParameterValue]</DataField>
+        </Field>
+        <Field Name="ParameterLevel">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>[ParameterLevel]</DataField>
+        </Field>
+        <Field Name="ParameterCaptionIndented">
+          <rd:TypeName>System.String</rd:TypeName>
+          <Value>=Space(3*Fields!ParameterLevel.Value) + Fields!ParameterCaption.Value</Value>
         </Field>
       </Fields>
     </DataSet>
@@ -186,7 +288,6 @@
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <rd:Selected>true</rd:Selected>
                         <Rectangle Name="Rectangle1">
                           <ReportItems>
                             <Textbox Name="Nome">
@@ -392,15 +493,6 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>dsVendedores</DataSetName>
-            <Filters>
-              <Filter>
-                <FilterExpression>=Fields!Região.Value</FilterExpression>
-                <Operator>Equal</Operator>
-                <FilterValues>
-                  <FilterValue>Sul</FilterValue>
-                </FilterValues>
-              </Filter>
-            </Filters>
             <SortExpressions>
               <SortExpression>
                 <Value>=Fields!Região.Value</Value>
@@ -498,10 +590,32 @@
       </Page>
     </ReportSection>
   </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="TbVendedoresRegiE3o">
+      <DataType>String</DataType>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>Região</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>TbVendedoresRegiE3o</DataSetName>
+          <ValueField>ParameterValue</ValueField>
+          <LabelField>ParameterCaptionIndented</LabelField>
+        </DataSetReference>
+      </ValidValues>
+      <MultiValue>true</MultiValue>
+    </ReportParameter>
+  </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>4</NumberOfColumns>
       <NumberOfRows>2</NumberOfRows>
+      <CellDefinitions>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>TbVendedoresRegiE3o</ParameterName>
+        </CellDefinition>
+      </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
 </Report>

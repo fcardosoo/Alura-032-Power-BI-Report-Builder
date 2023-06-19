@@ -1027,6 +1027,10 @@
                     </TablixMember>
                     <TablixMember>
                       <Group Name="Detalhes" />
+                      <Visibility>
+                        <Hidden>true</Hidden>
+                        <ToggleItem>Região</ToggleItem>
+                      </Visibility>
                     </TablixMember>
                   </TablixMembers>
                 </TablixMember>

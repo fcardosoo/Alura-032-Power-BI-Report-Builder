@@ -11,7 +11,7 @@
       <am:Name>PBIRB</am:Name>
       <am:Version>15.7.1803.54</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2023-06-19T13:52:08.6617934Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2023-06-19T19:39:45.7084525Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -139,6 +139,11 @@
     <DataSet Name="dsVendas">
       <Query>
         <DataSourceName>MeuWorkspace_DashboardVendas</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="TbCalendarioAno">
+            <Value>=Parameters!TbCalendarioAno.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
         <rd:DesignerState>
           <QueryDefinition xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/AnalysisServices/QueryDefinition">
             <CommandType>DAX</CommandType>
@@ -204,7 +209,19 @@
               <AutoExecute>false</AutoExecute>
               <From>Model</From>
               <Filter>
-                <FilterItems />
+                <FilterItems>
+                  <FilterItem>
+                    <HierarchyUniqueName>[Tb_Calendario].[Ano]</HierarchyUniqueName>
+                    <Condition xsi:type="EqualTo">
+                      <Members>
+                        <Member>
+                          <MemberUniqueName>[Tb_Calendario].[Ano].&amp;[2017]</MemberUniqueName>
+                        </Member>
+                      </Members>
+                      <Parametrized>true</Parametrized>
+                    </Condition>
+                  </FilterItem>
+                </FilterItems>
               </Filter>
               <Calculations />
               <Aggregates />
@@ -213,12 +230,30 @@
               </QueryProperties>
             </QuerySpecification>
             <Query>
-              <Statement>EVALUATE SUMMARIZECOLUMNS('Tb_Vendedores'[Nome], 'Tb_Vendedores'[Região], "Faturamento", [Faturamento], "QuantidadeDistinta", [QuantidadeDistinta])</Statement>
-              <ParameterDefinitions />
+              <Statement>EVALUATE SUMMARIZECOLUMNS('Tb_Vendedores'[Nome], 'Tb_Vendedores'[Região], RSCustomDaxFilter(@TbCalendarioAno,EqualToCondition,[Tb_Calendario].[Ano],Int64), "Faturamento", [Faturamento], "QuantidadeDistinta", [QuantidadeDistinta])</Statement>
+              <ParameterDefinitions>
+                <ParameterDefinition>
+                  <Name>TbCalendarioAno</Name>
+                  <DbType>Int64</DbType>
+                  <DefaultValues>
+                    <DefaultValue>2017</DefaultValue>
+                  </DefaultValues>
+                  <Caption>Ano</Caption>
+                  <HierarchyUniqueName>[Tb_Calendario].[Ano]</HierarchyUniqueName>
+                  <ParameterValuesQuery>
+                    <Statement>EVALUATE SELECTCOLUMNS (ADDCOLUMNS (SUMMARIZECOLUMNS (ROLLUPADDISSUBTOTAL ('Tb_Calendario'[Ano], "h0")), "ParameterLevel", if ([h0], 0, 1)), "ParameterCaption", SWITCH([ParameterLevel], 1, 'Tb_Calendario'[Ano], "Blank()"), "ParameterValue", 'Tb_Calendario'[Ano], "ParameterLevel", [ParameterLevel], "'Tb_Calendario'[Ano]", 'Tb_Calendario'[Ano]) order by 'Tb_Calendario'[Ano], [ParameterLevel]</Statement>
+                    <ParameterizedStatement>
+                      <ReferencedParameters />
+                    </ParameterizedStatement>
+                  </ParameterValuesQuery>
+                  <MultipleValues>true</MultipleValues>
+                  <AllowBlank>true</AllowBlank>
+                </ParameterDefinition>
+              </ParameterDefinitions>
             </Query>
           </QueryDefinition>
         </rd:DesignerState>
-        <CommandText>EVALUATE SUMMARIZECOLUMNS('Tb_Vendedores'[Nome], 'Tb_Vendedores'[Região], "Faturamento", [Faturamento], "QuantidadeDistinta", [QuantidadeDistinta])</CommandText>
+        <CommandText>EVALUATE SUMMARIZECOLUMNS('Tb_Vendedores'[Nome], 'Tb_Vendedores'[Região], RSCustomDaxFilter(@TbCalendarioAno,EqualToCondition,[Tb_Calendario].[Ano],Int64), "Faturamento", [Faturamento], "QuantidadeDistinta", [QuantidadeDistinta])</CommandText>
       </Query>
       <Fields>
         <Field Name="Nome">
@@ -236,6 +271,80 @@
         <Field Name="QuantidadeDistinta">
           <rd:TypeName>System.Int32</rd:TypeName>
           <DataField>[QuantidadeDistinta]</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="TbCalendarioAno">
+      <Query>
+        <DataSourceName>MeuWorkspace_DashboardVendas</DataSourceName>
+        <rd:DesignerState>
+          <QueryDefinition xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/AnalysisServices/QueryDefinition">
+            <CommandType>DAX</CommandType>
+            <Type>Query</Type>
+            <QuerySpecification xsi:type="MDXQuerySpecification">
+              <Select>
+                <Items>
+                  <Item>
+                    <ID xsi:type="Measure">
+                      <MeasureName>ParameterCaption</MeasureName>
+                      <UniqueName>[Measures].[ParameterCaption]</UniqueName>
+                    </ID>
+                    <ItemCaption>ParameterCaption</ItemCaption>
+                    <FormattedValue>true</FormattedValue>
+                  </Item>
+                  <Item>
+                    <ID xsi:type="Measure">
+                      <MeasureName>ParameterValue</MeasureName>
+                      <UniqueName>[Measures].[ParameterValue]</UniqueName>
+                    </ID>
+                    <ItemCaption>ParameterValue</ItemCaption>
+                    <FormattedValue>true</FormattedValue>
+                  </Item>
+                  <Item>
+                    <ID xsi:type="Measure">
+                      <MeasureName>ParameterLevel</MeasureName>
+                      <UniqueName>[Measures].[ParameterLevel]</UniqueName>
+                    </ID>
+                    <ItemCaption>ParameterLevel</ItemCaption>
+                    <FormattedValue>true</FormattedValue>
+                  </Item>
+                </Items>
+              </Select>
+              <AutoExecute>false</AutoExecute>
+              <From>Model</From>
+              <Filter>
+                <FilterItems />
+              </Filter>
+              <Calculations />
+              <Aggregates />
+              <QueryProperties />
+            </QuerySpecification>
+            <Query>
+              <Statement>EVALUATE SELECTCOLUMNS (ADDCOLUMNS (SUMMARIZECOLUMNS (ROLLUPADDISSUBTOTAL ('Tb_Calendario'[Ano], "h0")), "ParameterLevel", if ([h0], 0, 1)), "ParameterCaption", SWITCH([ParameterLevel], 1, 'Tb_Calendario'[Ano], "Blank()"), "ParameterValue", 'Tb_Calendario'[Ano], "ParameterLevel", [ParameterLevel], "'Tb_Calendario'[Ano]", 'Tb_Calendario'[Ano]) order by 'Tb_Calendario'[Ano], [ParameterLevel]</Statement>
+              <ParameterDefinitions />
+            </Query>
+          </QueryDefinition>
+        </rd:DesignerState>
+        <rd:AutoGenerated>true</rd:AutoGenerated>
+        <rd:Hidden>true</rd:Hidden>
+        <CommandText>EVALUATE SELECTCOLUMNS (ADDCOLUMNS (SUMMARIZECOLUMNS (ROLLUPADDISSUBTOTAL ('Tb_Calendario'[Ano], "h0")), "ParameterLevel", if ([h0], 0, 1)), "ParameterCaption", SWITCH([ParameterLevel], 1, 'Tb_Calendario'[Ano], "Blank()"), "ParameterValue", 'Tb_Calendario'[Ano], "ParameterLevel", [ParameterLevel], "'Tb_Calendario'[Ano]", 'Tb_Calendario'[Ano]) order by 'Tb_Calendario'[Ano], [ParameterLevel]</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="ParameterCaption">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>[ParameterCaption]</DataField>
+        </Field>
+        <Field Name="ParameterValue">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>[ParameterValue]</DataField>
+        </Field>
+        <Field Name="ParameterLevel">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>[ParameterLevel]</DataField>
+        </Field>
+        <Field Name="ParameterCaptionIndented">
+          <rd:TypeName>System.String</rd:TypeName>
+          <Value>=Space(3*Fields!ParameterLevel.Value) + Fields!ParameterCaption.Value</Value>
         </Field>
       </Fields>
     </DataSet>
@@ -1336,10 +1445,36 @@
       </Page>
     </ReportSection>
   </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="TbCalendarioAno">
+      <DataType>Integer</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>2017</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Ano</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>TbCalendarioAno</DataSetName>
+          <ValueField>ParameterValue</ValueField>
+          <LabelField>ParameterCaptionIndented</LabelField>
+        </DataSetReference>
+      </ValidValues>
+      <MultiValue>true</MultiValue>
+    </ReportParameter>
+  </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>4</NumberOfColumns>
       <NumberOfRows>2</NumberOfRows>
+      <CellDefinitions>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>TbCalendarioAno</ParameterName>
+        </CellDefinition>
+      </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
 </Report>

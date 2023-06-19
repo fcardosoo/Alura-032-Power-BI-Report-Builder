@@ -11,7 +11,7 @@
       <am:Name>PBIRB</am:Name>
       <am:Version>15.7.1803.54</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2023-06-13T13:08:23.0964675Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2023-06-19T14:20:33.4353980Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -182,10 +182,11 @@
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>39.69028mm</Height>
+                  <Height>43.33565mm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
+                        <rd:Selected>true</rd:Selected>
                         <Rectangle Name="Rectangle1">
                           <ReportItems>
                             <Textbox Name="Nome">
@@ -209,7 +210,7 @@
                                   </Style>
                                 </Paragraph>
                               </Paragraphs>
-                              <Top>3.34861mm</Top>
+                              <Top>6.99398mm</Top>
                               <Left>38.75833mm</Left>
                               <Height>8.29306mm</Height>
                               <Width>43.87361mm</Width>
@@ -243,7 +244,7 @@
                                   </Style>
                                 </Paragraph>
                               </Paragraphs>
-                              <Top>12.34722mm</Top>
+                              <Top>15.99259mm</Top>
                               <Left>38.75833mm</Left>
                               <Height>7.05833mm</Height>
                               <Width>43.87361mm</Width>
@@ -278,7 +279,7 @@
                                   </Style>
                                 </Paragraph>
                               </Paragraphs>
-                              <Top>20.46389mm</Top>
+                              <Top>24.10926mm</Top>
                               <Left>38.75833mm</Left>
                               <Height>7.41111mm</Height>
                               <Width>43.87361mm</Width>
@@ -314,7 +315,7 @@
                                   </Style>
                                 </Paragraph>
                               </Paragraphs>
-                              <Top>28.93333mm</Top>
+                              <Top>32.5787mm</Top>
                               <Left>38.75833mm</Left>
                               <Height>7.8755mm</Height>
                               <Width>43.87361mm</Width>
@@ -333,7 +334,7 @@
                               <Source>External</Source>
                               <Value>=Fields!Imagem.Value</Value>
                               <Sizing>FitProportional</Sizing>
-                              <Top>3.34861mm</Top>
+                              <Top>6.99398mm</Top>
                               <Left>3.52778mm</Left>
                               <Height>33.46022mm</Height>
                               <Width>30.16944mm</Width>
@@ -348,9 +349,28 @@
                           <KeepTogether>true</KeepTogether>
                           <Style>
                             <Border>
-                              <Color>DimGray</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </RightBorder>
                           </Style>
                         </Rectangle>
                       </CellContents>
@@ -372,6 +392,15 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>dsVendedores</DataSetName>
+            <Filters>
+              <Filter>
+                <FilterExpression>=Fields!Região.Value</FilterExpression>
+                <Operator>Equal</Operator>
+                <FilterValues>
+                  <FilterValue>Sul</FilterValue>
+                </FilterValues>
+              </Filter>
+            </Filters>
             <SortExpressions>
               <SortExpression>
                 <Value>=Fields!Região.Value</Value>
@@ -380,9 +409,9 @@
                 <Value>=Fields!Nome.Value</Value>
               </SortExpression>
             </SortExpressions>
-            <Top>17.45972mm</Top>
+            <Top>23.16296mm</Top>
             <Left>22.987mm</Left>
-            <Height>39.69028mm</Height>
+            <Height>43.33565mm</Height>
             <Width>87.21806mm</Width>
             <ZIndex>1</ZIndex>
             <Style>
@@ -391,18 +420,32 @@
               </Border>
             </Style>
           </Tablix>
+          <Rectangle Name="Rectangle3">
+            <KeepTogether>true</KeepTogether>
+            <Top>23.16296mm</Top>
+            <Left>22.987mm</Left>
+            <Height>3.34861mm</Height>
+            <Width>87.21806mm</Width>
+            <ZIndex>2</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <BackgroundColor>=Switch(Fields!Região.Value = "Sul", "#EDB975", Fields!Região.Value = "Sudeste", "#F2D096", Fields!Região.Value = "Nordeste", "#8FB9AA", Fields!Região.Value = "Norte", "#30MD63", Fields!Região.Value = "Centro-Oeste", "B2E7E8")</BackgroundColor>
+            </Style>
+          </Rectangle>
         </ReportItems>
-        <Height>61.38333mm</Height>
+        <Height>108.09111mm</Height>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
         </Style>
       </Body>
-      <Width>152.4mm</Width>
+      <Width>158.04445mm</Width>
       <Page>
         <PageFooter>
-          <Height>11.43mm</Height>
+          <Height>22.01333mm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -423,8 +466,8 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>5.08mm</Top>
-              <Left>101.6mm</Left>
+              <Top>15.66333mm</Top>
+              <Left>102.65833mm</Left>
               <Height>6.35mm</Height>
               <Width>50.8mm</Width>
               <Style>

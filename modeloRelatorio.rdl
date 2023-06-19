@@ -117,7 +117,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>5.08mm</Top>
+              <Top>1.76389mm</Top>
               <Left>0mm</Left>
               <Height>6.35mm</Height>
               <Width>64.38194mm</Width>
@@ -145,10 +145,12 @@
                       </Style>
                     </TextRun>
                   </TextRuns>
-                  <Style />
+                  <Style>
+                    <TextAlign>Right</TextAlign>
+                  </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>0.508cm</Top>
+              <Top>0.17639cm</Top>
               <Left>13.32301cm</Left>
               <Height>0.635cm</Height>
               <Width>2.67699cm</Width>
